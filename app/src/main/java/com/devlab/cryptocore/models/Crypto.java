@@ -1,5 +1,7 @@
 package com.devlab.cryptocore.models;
 
+import com.devlab.cryptocore.R;
+
 /**
  * Created by shaibu on 10/24/17.
  */
@@ -31,6 +33,17 @@ public enum Crypto {
                 return ETHERIUM;
             default:
                 return null;
+        }
+    }
+
+    public static int getImageResource(Crypto crypto){
+        switch (crypto){
+            case BITCOIN:
+                return R.drawable.bbtc;
+            case ETHERIUM:
+                return R.drawable.etth;
+            default:
+                return 0;
         }
     }
 }

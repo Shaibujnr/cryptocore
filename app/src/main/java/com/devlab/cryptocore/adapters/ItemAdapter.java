@@ -15,9 +15,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.devlab.cryptocore.R;
+import com.devlab.cryptocore.models.Crypto;
 import com.devlab.cryptocore.models.Item;
 import com.devlab.cryptocore.models.SpinnerItem;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.HashMap;
@@ -46,6 +48,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Item currentItem = items.get(position);
+        holder.cryptoImage.setImageResource(Crypto.getImageResource(currentItem.getCrypto_type()));
+        holder.timeStamp.setText("Updated: "+
+                new SimpleDateFormat("dd/MM/yyyy hh:mm").format(currentItem.getLast_synced()));
+        holder.priceText.setText(currentItem.getCurrency().getSymbol()+"1,234,567,890");
         holder.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
