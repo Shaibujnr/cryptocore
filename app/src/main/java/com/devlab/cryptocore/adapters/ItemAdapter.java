@@ -6,13 +6,20 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.devlab.cryptocore.R;
 import com.devlab.cryptocore.models.Item;
 import com.devlab.cryptocore.models.SpinnerItem;
 
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.HashMap;
 
 /**
@@ -37,8 +44,23 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
+        final Item currentItem = items.get(position);
+        holder.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                SpinnerItem spinnerItem = spinnerItems.get(i);
+                Toast.makeText(view.getContext(),spinnerItem.getItem_text(),Toast.LENGTH_SHORT).show();
+                currentItem.setCurrency(Currency.getInstance(spinnerItem.getItem_text().toUpperCase()));
+                String price = currentItem.getCurrency().getSymbol()+"1,234,567,890";
+                holder.priceText.setText(price);
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     @Override
@@ -48,13 +70,22 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
     public  class ViewHolder extends RecyclerView.ViewHolder{
         private Spinner spinner;
+        private TextView priceText,timeStamp;
+        private ImageView cryptoImage;
+        private ImageButton delete,refresh;
         public ViewHolder(View itemView) {
 
             super(itemView);
             spinner = itemView.findViewById(R.id.item_spinner);
+            priceText = itemView.findViewById(R.id.item_price);
+            timeStamp = itemView.findViewById(R.id.item_time_stamp);
+            cryptoImage = itemView.findViewById(R.id.item_image);
+            delete = itemView.findViewById(R.id.item_delete);
+            refresh = itemView.findViewById(R.id.item_refresh);
             SpinnerAdapter adapter = new SpinnerAdapter(spinnerItems);
             spinner.setAdapter(adapter);
-        }
+
+    }
     }
 
 

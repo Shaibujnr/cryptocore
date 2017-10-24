@@ -50,6 +50,7 @@
                 android:textAlignment="textEnd"
                 android:layout_gravity="end"
                 android:textSize="14sp"
+                android:id="@+id/item_time_stamp"
                 android:text="Last Updated: 3 days ago"
                 android:typeface="monospace"/>
 
@@ -67,10 +68,12 @@
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/item_delete"
                 android:src="@drawable/delete"/>
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/item_refresh"
                 android:src="@drawable/update"/>
         </LinearLayout>
     </RelativeLayout>
