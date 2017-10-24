@@ -1,3 +1,49 @@
 <resources>
     <string name="app_name">Cryptocore</string>
+
+    <string-array name="spinner_choices">
+        <item>NGN</item>
+        <item>GBP</item>
+        <item>USD</item>
+        <item>AUD</item>
+        <item>EUR</item>
+        <item>CAD</item>
+        <item>CHF</item>
+        <item>BRL</item>
+        <item>EGP</item>
+        <item>INR</item>
+        <item>JPY</item>
+        <item>QAR</item>
+        <item>SAR</item>
+        <item>ZAR</item>
+        <item>NZD</item>
+        <item>DKK</item>
+        <item>HUF</item>
+        <item>GHS</item>
+        <item>CRC</item>
+        <item>CUP</item>
+    </string-array>
+
+    <array name="spinner_images">
+        <item>@drawable/ngn</item>
+        <item>@drawable/gbp</item>
+        <item>@drawable/usd</item>
+        <item>@drawable/aud</item>
+        <item>@drawable/eur</item>
+        <item>@drawable/cad</item>
+        <item>@drawable/chf</item>
+        <item>@drawable/brl</item>
+        <item>@drawable/egp</item>
+        <item>@drawable/inr</item>
+        <item>@drawable/jpy</item>
+        <item>@drawable/qar</item>
+        <item>@drawable/sar</item>
+        <item>@drawable/zar</item>
+        <item>@drawable/nzd</item>
+        <item>@drawable/dkk</item>
+        <item>@drawable/huf</item>
+        <item>@drawable/ghs</item>
+        <item>@drawable/crc</item>
+        <item>@drawable/cup</item>
+    </array>
 </resources>
