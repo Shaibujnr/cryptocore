@@ -47,4 +47,13 @@ public class SpinnerAdapter extends BaseAdapter {
         img.setImageResource(current_item.getItem_image());
         return v;
     }
+
+    public int getPosbyCode(String code){
+        for(SpinnerItem spinnerItem : spinnerItems){
+            if(spinnerItem.getItem_text().toUpperCase().equals(code.toUpperCase())){
+                return spinnerItems.indexOf(spinnerItem);
+            }
+        }
+        return -1;
+    }
 }

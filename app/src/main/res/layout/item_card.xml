@@ -38,11 +38,25 @@
                 android:textAlignment="textEnd"
                 android:layout_gravity="end"
                 android:textSize="23sp"/>
-            <Spinner
-                android:id="@+id/item_spinner"
-                android:layout_width="100dp"
-                android:layout_marginTop="5dp"
-                android:layout_height="match_parent" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/item_crypto_code"
+                    android:textStyle="bold"
+                    android:textColor="#ff0000"
+                    android:text="BTC"/>
+                <Spinner
+                    android:id="@+id/item_spinner"
+                    android:layout_width="100dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+
 
             <TextView
                 android:layout_width="match_parent"

@@ -31,6 +31,7 @@ import java.util.HashMap;
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     ArrayList<Item> items;
     ArrayList<SpinnerItem> spinnerItems;
+    SpinnerAdapter spinnerAdapter;
 
 
     public ItemAdapter(ArrayList<Item> items){
@@ -52,11 +53,13 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         holder.timeStamp.setText("Updated: "+
                 new SimpleDateFormat("dd/MM/yyyy hh:mm").format(currentItem.getLast_synced()));
         holder.priceText.setText(currentItem.getCurrency().getSymbol()+"1,234,567,890");
+        holder.crytoCode.setText(currentItem.getCrypto_type().toString());
+        int spinner_pos = spinnerAdapter.getPosbyCode(currentItem.getCurrency().getCurrencyCode().toUpperCase());
+        holder.spinner.setSelection(spinner_pos);
         holder.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 SpinnerItem spinnerItem = spinnerItems.get(i);
-                Toast.makeText(view.getContext(),spinnerItem.getItem_text(),Toast.LENGTH_SHORT).show();
                 currentItem.setCurrency(Currency.getInstance(spinnerItem.getItem_text().toUpperCase()));
                 String price = currentItem.getCurrency().getSymbol()+"1,234,567,890";
                 holder.priceText.setText(price);
@@ -76,7 +79,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
     public  class ViewHolder extends RecyclerView.ViewHolder{
         private Spinner spinner;
-        private TextView priceText,timeStamp;
+        private TextView priceText,timeStamp,crytoCode;
         private ImageView cryptoImage;
         private ImageButton delete,refresh;
         public ViewHolder(View itemView) {
@@ -85,11 +88,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             spinner = itemView.findViewById(R.id.item_spinner);
             priceText = itemView.findViewById(R.id.item_price);
             timeStamp = itemView.findViewById(R.id.item_time_stamp);
+            crytoCode = itemView.findViewById(R.id.item_crypto_code);
             cryptoImage = itemView.findViewById(R.id.item_image);
             delete = itemView.findViewById(R.id.item_delete);
             refresh = itemView.findViewById(R.id.item_refresh);
-            SpinnerAdapter adapter = new SpinnerAdapter(spinnerItems);
-            spinner.setAdapter(adapter);
+            spinnerAdapter = new SpinnerAdapter(spinnerItems);
+            spinner.setAdapter(spinnerAdapter);
 
     }
     }

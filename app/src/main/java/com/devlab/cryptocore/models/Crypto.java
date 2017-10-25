@@ -36,6 +36,7 @@ public enum Crypto {
         }
     }
 
+
     public static int getImageResource(Crypto crypto){
         switch (crypto){
             case BITCOIN:
