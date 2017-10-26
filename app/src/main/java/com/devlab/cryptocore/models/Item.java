@@ -1,5 +1,12 @@
 package com.devlab.cryptocore.models;
 
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
+import android.widget.Toast;
+
+import com.devlab.cryptocore.R;
+
 import java.io.Serializable;
 import java.util.Currency;
 import java.util.Date;
@@ -62,6 +69,18 @@ public class Item implements Serializable{
 
     public void setCurrency(Currency currency) {
         this.currency = currency;
+    }
+
+    public static Drawable getDrawableFromCode(String code,Context context){
+        String[] choices = context.getResources().getStringArray(R.array.spinner_choices);
+        TypedArray imgs = context.getResources().obtainTypedArray(R.array.spinner_images);
+        for(int i=0;i<choices.length;i++){
+            if(choices[i].equals(code)){
+                Toast.makeText(context,"found it",Toast.LENGTH_SHORT).show();
+                return imgs.getDrawable(i);
+            }
+        }
+        return null;
     }
 
 

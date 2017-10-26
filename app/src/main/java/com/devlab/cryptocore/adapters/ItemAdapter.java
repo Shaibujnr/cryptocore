@@ -45,7 +45,6 @@ import java.util.HashMap;
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     ArrayList<Item> items;
     ArrayList<SpinnerItem> spinnerItems;
-    SpinnerAdapter spinnerAdapter;
     Context context;
     NetworkQueue queue;
 
@@ -68,68 +67,14 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Item currentItem = items.get(position);
         holder.cryptoImage.setImageResource(Crypto.getImageResource(currentItem.getCrypto_type()));
-        holder.timeStamp.setText("Updated: "+
-                new SimpleDateFormat("dd/MM/yyyy hh:mm").format(currentItem.getLast_synced()));
-        holder.priceText.setText(currentItem.getCurrency().getSymbol()+PriceHelper.format(currentItem.getPrice()));
+        holder.timeStamp.setText(String.format("%s: %S","Updated",new SimpleDateFormat("dd/MM/yyyy hh:mm").
+                        format(currentItem.getLast_synced())));
+        holder.priceText.setText(String.format("%s%s",currentItem.getCurrency().getSymbol(),
+                PriceHelper.format(currentItem.getPrice())));
         holder.crytoCode.setText(currentItem.getCrypto_type().toString());
-        int spinner_pos = spinnerAdapter.getPosbyCode(currentItem.getCurrency().getCurrencyCode().toUpperCase());
-        holder.spinner.setSelection(spinner_pos);
-        holder.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                final SpinnerItem spinnerItem = spinnerItems.get(i);
-                if(!(currentItem.getCurrency() == Currency.getInstance(spinnerItem.getItem_text().toUpperCase()))){
-                    currentItem.setCurrency(Currency.getInstance(spinnerItem.getItem_text().toUpperCase()));
-                    holder.progressBar.setVisibility(View.VISIBLE);
-                    Uri.Builder builder = Uri.parse(NetworkQueue.url_endpoint).buildUpon();
-                    builder.appendQueryParameter("fsym",currentItem.getCrypto_type().toString());
-                    builder.appendQueryParameter("tsyms",currentItem.getCurrency().getCurrencyCode().toUpperCase());
-                    String url = builder.build().toString();
-                    JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
-                            url, null,
-                            new Response.Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response) {
-                                    PriceHelper priceHelper = new PriceHelper(response);
-                                    double price = priceHelper.getPrice();
-                                    if(price == -1){
-                                        //Error Encountered
-                                        holder.progressBar.setVisibility(View.GONE);
-                                        int spinner_pos = spinnerAdapter.getPosbyCode(currentItem.getCurrency().getCurrencyCode().toUpperCase());
-                                        holder.spinner.setSelection(spinner_pos);
-                                        Toast.makeText(context,"Error Encountered",Toast.LENGTH_SHORT).show();
-
-                                    }
-                                    else{
-                                        holder.progressBar.setVisibility(View.GONE);
-
-                                        currentItem.setPrice(price);
-                                        String price_str = currentItem.getCurrency().getSymbol()+PriceHelper.format(currentItem.getPrice());
-                                        holder.priceText.setText(price_str);
-                                    }
-
-                                }
-                            }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            holder.progressBar.setVisibility(View.GONE);
-                            int spinner_pos = spinnerAdapter.getPosbyCode(currentItem.getCurrency().getCurrencyCode().toUpperCase());
-                            holder.spinner.setSelection(spinner_pos);
-                            Toast.makeText(context,"Error Encountered",Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                    queue.addToRequestQueue(request);
-
-
-                }
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
+        holder.spinner.setCompoundDrawablesWithIntrinsicBounds(Item.getDrawableFromCode(currentItem
+        .getCurrency().getCurrencyCode().toUpperCase(),context),null,null,null);
+        holder.spinner.setText(currentItem.getCurrency().getCurrencyCode().toUpperCase());
         holder.refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -207,12 +152,13 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     }
 
     public  class ViewHolder extends RecyclerView.ViewHolder{
-        private Spinner spinner;
+        private TextView spinner;
         private TextView priceText,timeStamp,crytoCode;
         private ImageView cryptoImage;
         private ImageButton delete,refresh;
         private ProgressBar progressBar;
         private View self;
+
         public ViewHolder(View itemView) {
 
             super(itemView);
@@ -225,10 +171,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             delete = itemView.findViewById(R.id.item_delete);
             refresh = itemView.findViewById(R.id.item_refresh);
             progressBar = itemView.findViewById(R.id.item_progress);
-            spinnerAdapter = new SpinnerAdapter(spinnerItems);
-            spinner.setAdapter(spinnerAdapter);
 
-    }
+        }
     }
 
 
