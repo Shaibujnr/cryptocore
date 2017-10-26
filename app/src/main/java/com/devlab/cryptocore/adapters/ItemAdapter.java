@@ -1,6 +1,8 @@
 package com.devlab.cryptocore.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
@@ -73,6 +75,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 final SpinnerItem spinnerItem = spinnerItems.get(i);
                 if(!(currentItem.getCurrency() == Currency.getInstance(spinnerItem.getItem_text().toUpperCase()))){
+                    currentItem.setCurrency(Currency.getInstance(spinnerItem.getItem_text().toUpperCase()));
                     holder.progressBar.setVisibility(View.VISIBLE);
                     Uri.Builder builder = Uri.parse(NetworkQueue.url_endpoint).buildUpon();
                     builder.appendQueryParameter("fsym",currentItem.getCrypto_type().toString());
@@ -95,7 +98,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
                                     }
                                     else{
                                         holder.progressBar.setVisibility(View.GONE);
-                                        currentItem.setCurrency(Currency.getInstance(spinnerItem.getItem_text().toUpperCase()));
+
+                                        currentItem.setPrice(price);
                                         String price_str = currentItem.getCurrency().getSymbol()+String.valueOf(currentItem.getPrice());
                                         holder.priceText.setText(price_str);
                                     }
@@ -119,6 +123,27 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        holder.delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final AlertDialog dialog = new AlertDialog.Builder(context).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        items.remove(currentItem);
+                        notifyDataSetChanged();
+
+                    }
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                }).setTitle("Delete?")
+                        .create();
+                dialog.show();
 
             }
         });
