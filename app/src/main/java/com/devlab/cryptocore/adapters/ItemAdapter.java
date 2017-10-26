@@ -3,6 +3,7 @@ package com.devlab.cryptocore.adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
@@ -25,6 +26,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.devlab.cryptocore.NetworkQueue;
 import com.devlab.cryptocore.PriceHelper;
 import com.devlab.cryptocore.R;
+import com.devlab.cryptocore.activities.ExchangeActivity;
 import com.devlab.cryptocore.models.Crypto;
 import com.devlab.cryptocore.models.Item;
 import com.devlab.cryptocore.models.SpinnerItem;
@@ -45,6 +47,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     ArrayList<SpinnerItem> spinnerItems;
     SpinnerAdapter spinnerAdapter;
     Context context;
+    NetworkQueue queue;
 
 
     public ItemAdapter(ArrayList<Item> items){
@@ -55,6 +58,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card,parent,false);
         this.context = parent.getContext();
+        queue = NetworkQueue.getInstance(context);
         initSpinner(context);
         return new ViewHolder(v);
 
@@ -66,7 +70,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         holder.cryptoImage.setImageResource(Crypto.getImageResource(currentItem.getCrypto_type()));
         holder.timeStamp.setText("Updated: "+
                 new SimpleDateFormat("dd/MM/yyyy hh:mm").format(currentItem.getLast_synced()));
-        holder.priceText.setText(currentItem.getCurrency().getSymbol()+String.valueOf(currentItem.getPrice()));
+        holder.priceText.setText(currentItem.getCurrency().getSymbol()+PriceHelper.format(currentItem.getPrice()));
         holder.crytoCode.setText(currentItem.getCrypto_type().toString());
         int spinner_pos = spinnerAdapter.getPosbyCode(currentItem.getCurrency().getCurrencyCode().toUpperCase());
         holder.spinner.setSelection(spinner_pos);
@@ -100,7 +104,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
                                         holder.progressBar.setVisibility(View.GONE);
 
                                         currentItem.setPrice(price);
-                                        String price_str = currentItem.getCurrency().getSymbol()+String.valueOf(currentItem.getPrice());
+                                        String price_str = currentItem.getCurrency().getSymbol()+PriceHelper.format(currentItem.getPrice());
                                         holder.priceText.setText(price_str);
                                     }
 
@@ -114,7 +118,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
                             Toast.makeText(context,"Error Encountered",Toast.LENGTH_SHORT).show();
                         }
                     });
-                    NetworkQueue.getInstance(context).addToRequestQueue(request);
+                    queue.addToRequestQueue(request);
 
 
                 }
@@ -124,6 +128,45 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
+            }
+        });
+        holder.refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                holder.progressBar.setVisibility(View.VISIBLE);
+                Uri.Builder builder = Uri.parse(NetworkQueue.url_endpoint).buildUpon();
+                builder.appendQueryParameter("fsym",currentItem.getCrypto_type().toString());
+                builder.appendQueryParameter("tsyms",currentItem.getCurrency().getCurrencyCode().toUpperCase());
+                String url = builder.build().toString();
+                JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
+                        url, null,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                PriceHelper priceHelper = new PriceHelper(response);
+                                double price = priceHelper.getPrice();
+                                if(price == -1){
+                                    //Error Encountered
+                                    holder.progressBar.setVisibility(View.GONE);;
+                                    Toast.makeText(context,"Error Encountered",Toast.LENGTH_SHORT).show();
+
+                                }
+                                else{
+                                    holder.progressBar.setVisibility(View.GONE);
+                                    currentItem.setPrice(price);
+                                    String price_str = currentItem.getCurrency().getSymbol()+PriceHelper.format(currentItem.getPrice());
+                                    holder.priceText.setText(price_str);
+                                }
+
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        holder.progressBar.setVisibility(View.GONE);
+                        Toast.makeText(context,"Error Encountered",Toast.LENGTH_SHORT).show();
+                    }
+                });
+                queue.addToRequestQueue(request);
             }
         });
         holder.delete.setOnClickListener(new View.OnClickListener() {
@@ -147,6 +190,15 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
             }
         });
+        holder.self.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(context,"Card Clicked",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, ExchangeActivity.class);
+                intent.putExtra("card",currentItem);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -160,9 +212,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         private ImageView cryptoImage;
         private ImageButton delete,refresh;
         private ProgressBar progressBar;
+        private View self;
         public ViewHolder(View itemView) {
 
             super(itemView);
+            self = itemView;
             spinner = itemView.findViewById(R.id.item_spinner);
             priceText = itemView.findViewById(R.id.item_price);
             timeStamp = itemView.findViewById(R.id.item_time_stamp);

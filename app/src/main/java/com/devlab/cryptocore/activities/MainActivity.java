@@ -1,4 +1,4 @@
-package com.devlab.cryptocore;
+package com.devlab.cryptocore.activities;
 
 import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
@@ -16,6 +16,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.devlab.cryptocore.NetworkQueue;
+import com.devlab.cryptocore.PriceHelper;
+import com.devlab.cryptocore.R;
 import com.devlab.cryptocore.adapters.ItemAdapter;
 import com.devlab.cryptocore.fragments.CardDialog;
 import com.devlab.cryptocore.models.Crypto;

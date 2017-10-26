@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.devlab.cryptocore.activities.ExchangeActivity">
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/bbtc"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/exchange_image"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="15dp"
+        android:orientation="vertical"
+        android:layout_toRightOf="@id/exchange_image"
+        android:layout_toEndOf="@id/exchange_image">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="NGN2,123,456"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:typeface="monospace"
+            android:textColor="#5588ff"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="BTC"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:typeface="monospace" />
+    </LinearLayout>
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/exchange_image"
+        android:id="@+id/exchange_spinner"
+        android:padding="5dp"
+        android:layout_marginTop="5dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:layout_marginTop="5dp"
+        android:drawableLeft="@android:drawable/ic_menu_my_calendar"
+        android:layout_below="@id/exchange_spinner"
+        android:id="@+id/exchange_created"
+        android:text="Date Created"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/exchange_created"
+        android:id="@+id/exchange_updated"
+        android:drawableLeft="@android:drawable/ic_menu_my_calendar"
+        android:text="Last Updated"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/exchange_updated"
+        android:id="@+id/exchange_fetched"
+        android:drawableLeft="@android:drawable/ic_menu_my_calendar"
+        android:text="Last Fetched"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="match_parent"
+            android:src="@drawable/delete"/>
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="match_parent"
+            android:src="@drawable/update"/>
+    </LinearLayout>
+
+</RelativeLayout>

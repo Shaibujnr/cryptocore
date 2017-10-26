@@ -1,5 +1,6 @@
 package com.devlab.cryptocore.models;
 
+import java.io.Serializable;
 import java.util.Currency;
 import java.util.Date;
 
@@ -7,7 +8,7 @@ import java.util.Date;
  * Created by shaibu on 10/24/17.
  */
 
-public class Item {
+public class Item implements Serializable{
     private Crypto crypto_type;
     private double price;
     private Date last_synced;

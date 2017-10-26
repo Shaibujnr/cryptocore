@@ -3,7 +3,6 @@ package com.devlab.cryptocore.fragments;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,11 +15,10 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.devlab.cryptocore.MainActivity;
+import com.devlab.cryptocore.activities.MainActivity;
 import com.devlab.cryptocore.R;
 import com.devlab.cryptocore.adapters.SpinnerAdapter;
 import com.devlab.cryptocore.models.Crypto;
-import com.devlab.cryptocore.models.Item;
 import com.devlab.cryptocore.models.SpinnerItem;
 
 import java.util.ArrayList;

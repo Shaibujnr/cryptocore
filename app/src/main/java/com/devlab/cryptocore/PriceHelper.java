@@ -4,6 +4,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.NumberFormat;
+
 /**
  * Created by shaibu on 10/26/17.
  */
@@ -29,5 +31,9 @@ public class PriceHelper {
             e.printStackTrace();
         }
         return -1;
+    }
+
+    public static String format(double price){
+        return NumberFormat.getNumberInstance().format(price);
     }
 }
