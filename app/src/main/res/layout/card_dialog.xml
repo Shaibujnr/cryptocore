@@ -23,5 +23,27 @@
             android:id="@+id/dialog_eth"
             android:text="ETH"/>
     </RadioGroup>
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dialog_progress"
+        android:visibility="gone"
+        android:indeterminate="true"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/dialog_cancel"
+            android:text="Cancel"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/dialog_done"
+            android:text="Done"/>
+    </LinearLayout>
 
 </LinearLayout>

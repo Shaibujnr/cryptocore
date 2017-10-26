@@ -2,6 +2,7 @@ package com.devlab.cryptocore.adapters;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,14 +11,23 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.devlab.cryptocore.NetworkQueue;
+import com.devlab.cryptocore.PriceHelper;
 import com.devlab.cryptocore.R;
 import com.devlab.cryptocore.models.Crypto;
 import com.devlab.cryptocore.models.Item;
 import com.devlab.cryptocore.models.SpinnerItem;
+
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,6 +42,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     ArrayList<Item> items;
     ArrayList<SpinnerItem> spinnerItems;
     SpinnerAdapter spinnerAdapter;
+    Context context;
 
 
     public ItemAdapter(ArrayList<Item> items){
@@ -41,7 +52,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card,parent,false);
-        initSpinner(parent.getContext());
+        this.context = parent.getContext();
+        initSpinner(context);
         return new ViewHolder(v);
 
     }
@@ -52,17 +64,57 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         holder.cryptoImage.setImageResource(Crypto.getImageResource(currentItem.getCrypto_type()));
         holder.timeStamp.setText("Updated: "+
                 new SimpleDateFormat("dd/MM/yyyy hh:mm").format(currentItem.getLast_synced()));
-        holder.priceText.setText(currentItem.getCurrency().getSymbol()+"1,234,567,890");
+        holder.priceText.setText(currentItem.getCurrency().getSymbol()+String.valueOf(currentItem.getPrice()));
         holder.crytoCode.setText(currentItem.getCrypto_type().toString());
         int spinner_pos = spinnerAdapter.getPosbyCode(currentItem.getCurrency().getCurrencyCode().toUpperCase());
         holder.spinner.setSelection(spinner_pos);
         holder.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                SpinnerItem spinnerItem = spinnerItems.get(i);
-                currentItem.setCurrency(Currency.getInstance(spinnerItem.getItem_text().toUpperCase()));
-                String price = currentItem.getCurrency().getSymbol()+"1,234,567,890";
-                holder.priceText.setText(price);
+                final SpinnerItem spinnerItem = spinnerItems.get(i);
+                if(!(currentItem.getCurrency() == Currency.getInstance(spinnerItem.getItem_text().toUpperCase()))){
+                    holder.progressBar.setVisibility(View.VISIBLE);
+                    Uri.Builder builder = Uri.parse(NetworkQueue.url_endpoint).buildUpon();
+                    builder.appendQueryParameter("fsym",currentItem.getCrypto_type().toString());
+                    builder.appendQueryParameter("tsyms",currentItem.getCurrency().getCurrencyCode().toUpperCase());
+                    String url = builder.build().toString();
+                    JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
+                            url, null,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    PriceHelper priceHelper = new PriceHelper(response);
+                                    double price = priceHelper.getPrice();
+                                    if(price == -1){
+                                        //Error Encountered
+                                        holder.progressBar.setVisibility(View.GONE);
+                                        int spinner_pos = spinnerAdapter.getPosbyCode(currentItem.getCurrency().getCurrencyCode().toUpperCase());
+                                        holder.spinner.setSelection(spinner_pos);
+                                        Toast.makeText(context,"Error Encountered",Toast.LENGTH_SHORT).show();
+
+                                    }
+                                    else{
+                                        holder.progressBar.setVisibility(View.GONE);
+                                        currentItem.setCurrency(Currency.getInstance(spinnerItem.getItem_text().toUpperCase()));
+                                        String price_str = currentItem.getCurrency().getSymbol()+String.valueOf(currentItem.getPrice());
+                                        holder.priceText.setText(price_str);
+                                    }
+
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            holder.progressBar.setVisibility(View.GONE);
+                            int spinner_pos = spinnerAdapter.getPosbyCode(currentItem.getCurrency().getCurrencyCode().toUpperCase());
+                            holder.spinner.setSelection(spinner_pos);
+                            Toast.makeText(context,"Error Encountered",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    NetworkQueue.getInstance(context).addToRequestQueue(request);
+
+
+                }
+
             }
 
             @Override
@@ -82,6 +134,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         private TextView priceText,timeStamp,crytoCode;
         private ImageView cryptoImage;
         private ImageButton delete,refresh;
+        private ProgressBar progressBar;
         public ViewHolder(View itemView) {
 
             super(itemView);
@@ -92,6 +145,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             cryptoImage = itemView.findViewById(R.id.item_image);
             delete = itemView.findViewById(R.id.item_delete);
             refresh = itemView.findViewById(R.id.item_refresh);
+            progressBar = itemView.findViewById(R.id.item_progress);
             spinnerAdapter = new SpinnerAdapter(spinnerItems);
             spinner.setAdapter(spinnerAdapter);
 
