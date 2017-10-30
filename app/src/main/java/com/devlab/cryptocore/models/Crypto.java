@@ -2,11 +2,13 @@ package com.devlab.cryptocore.models;
 
 import com.devlab.cryptocore.R;
 
+import java.io.Serializable;
+
 /**
  * Created by shaibu on 10/24/17.
  */
 
-public enum Crypto {
+public enum Crypto implements Serializable{
     BITCOIN(1,"BTC"),
     ETHERIUM(2,"ETH");
 

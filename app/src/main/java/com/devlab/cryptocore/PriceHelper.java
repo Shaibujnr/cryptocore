@@ -1,5 +1,7 @@
 package com.devlab.cryptocore;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,16 +18,14 @@ public class PriceHelper {
         this.response = response;
     }
 
-    public double getPrice(){
+    public double getPrice(String code){
         try {
-            int response_type = response.getInt("Type");
-            JSONArray array = response.getJSONArray("Data");
-            if(response_type != 100){
+            String response_status = response.optString("Response",null);
+            if(response_status != null && response_status.equals("Error")){
+                Log.e("Fetching",response.getString("Message"));
                 return -1;
             }
-            JSONObject result = array.getJSONObject(0);
-            double price = result.getDouble("Price");
-            return price;
+            return response.getDouble(code);
 
         } catch (JSONException e) {
             e.printStackTrace();

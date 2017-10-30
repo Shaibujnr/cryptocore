@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,7 +69,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         final Item currentItem = items.get(position);
         holder.cryptoImage.setImageResource(Crypto.getImageResource(currentItem.getCrypto_type()));
         holder.timeStamp.setText(String.format("%s: %S","Updated",new SimpleDateFormat("dd/MM/yyyy hh:mm").
-                        format(currentItem.getLast_synced())));
+                        format(currentItem.getUpdated())));
         holder.priceText.setText(String.format("%s%s",currentItem.getCurrency().getSymbol(),
                 PriceHelper.format(currentItem.getPrice())));
         holder.crytoCode.setText(currentItem.getCrypto_type().toString());
@@ -89,9 +90,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
                             @Override
                             public void onResponse(JSONObject response) {
                                 PriceHelper priceHelper = new PriceHelper(response);
-                                double price = priceHelper.getPrice();
+                                double price = priceHelper.getPrice(currentItem.getCurrency().getCurrencyCode().toUpperCase());
                                 if(price == -1){
                                     //Error Encountered
+                                    Log.e("Fetching","Error here in Item adapter");
                                     holder.progressBar.setVisibility(View.GONE);;
                                     Toast.makeText(context,"Error Encountered",Toast.LENGTH_SHORT).show();
 
@@ -140,7 +142,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             public void onClick(View view) {
                 Toast.makeText(context,"Card Clicked",Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(context, ExchangeActivity.class);
-                intent.putExtra("card",currentItem);
+                intent.putExtra("card_crypto_type",currentItem.getCrypto_type());
+                intent.putExtra("card_currency_code",currentItem.getCurrency().getCurrencyCode());
+                intent.putExtra("card_price",currentItem.getPrice());
+                intent.putExtra("card_created",currentItem.getCreated());
+                intent.putExtra("card_updated",currentItem.getUpdated());
+                intent.putExtra("card_source_updated",currentItem.getSource_updated());
                 context.startActivity(intent);
             }
         });

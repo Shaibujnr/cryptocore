@@ -14,7 +14,7 @@ public class NetworkQueue {
     private static NetworkQueue mInstance;
     private RequestQueue mRequestQueue;
     private static Context mContext;
-    public static final String url_endpoint = "https://www.cryptocompare.com/api/data/price";
+    public static final String url_endpoint = "https://min-api.cryptocompare.com/data/price";
 
     private NetworkQueue(Context context){
         mContext = context;

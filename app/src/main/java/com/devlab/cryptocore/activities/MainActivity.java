@@ -21,6 +21,7 @@ import com.devlab.cryptocore.PriceHelper;
 import com.devlab.cryptocore.R;
 import com.devlab.cryptocore.adapters.ItemAdapter;
 import com.devlab.cryptocore.fragments.CardDialog;
+import com.devlab.cryptocore.interfaces.ItemUpdatedListener;
 import com.devlab.cryptocore.models.Crypto;
 import com.devlab.cryptocore.models.Item;
 
@@ -29,10 +30,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements CardDialog.CardDialogListener{
+public class MainActivity extends AppCompatActivity implements CardDialog.CardDialogListener,ItemUpdatedListener{
     ItemAdapter adapter;
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
@@ -48,8 +50,8 @@ public class MainActivity extends AppCompatActivity implements CardDialog.CardDi
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
         items = new ArrayList<Item>();
-        items.add(new Item(Crypto.BITCOIN,12345.4,"NGN"));
-        items.add(new Item(Crypto.ETHERIUM,4567.8,"USD"));
+        items.add(new Item(this,Crypto.BITCOIN,12345.4,"NGN"));
+        items.add(new Item(this,Crypto.ETHERIUM,4567.8,"USD"));
         recyclerView.setLayoutManager(layoutManager);
         adapter = new ItemAdapter(items);
         recyclerView.setAdapter(adapter);
@@ -94,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements CardDialog.CardDi
                     @Override
                     public void onResponse(JSONObject response) {
                         PriceHelper priceHelper = new PriceHelper(response);
-                        double price = priceHelper.getPrice();
+                        double price = priceHelper.getPrice(code.toUpperCase());
                         if(price == -1){
                             //Error Encountered
                             progressBar.setVisibility(View.GONE);
@@ -104,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements CardDialog.CardDi
                         }
                         else{
                             progressBar.setVisibility(View.GONE);
-                            items.add(0,new Item(crypto,price,code));
+                            items.add(0,new Item(MainActivity.this,crypto,price,code));
                             adapter.notifyDataSetChanged();
                             dialog.dismiss();
                         }
@@ -136,5 +138,23 @@ public class MainActivity extends AppCompatActivity implements CardDialog.CardDi
     }
 
 
+    @Override
+    public void onPriceChanged(double old, double recent) {
 
+    }
+
+    @Override
+    public void onDateCreatedChanged(Date old, Date recent) {
+
+    }
+
+    @Override
+    public void onDateUpdatedChanged(Date old, Date recent) {
+
+    }
+
+    @Override
+    public void onSourceUpdatedChanged(Date old, Date recent) {
+
+    }
 }

@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.widget.Toast;
 
 import com.devlab.cryptocore.R;
+import com.devlab.cryptocore.interfaces.ItemUpdatedListener;
 
 import java.io.Serializable;
 import java.util.Currency;
@@ -18,25 +19,51 @@ import java.util.Date;
 public class Item implements Serializable{
     private Crypto crypto_type;
     private double price;
-    private Date last_synced;
+    private Date created;
+    private Date updated;
+    private Date source_updated;
     private Currency currency;
+    private ItemUpdatedListener updatedListener;
 
+    public Item(Context context,Crypto crypto_type, double price, Date created, Date updated,
+                Date source_updated, Currency currency) {
+        try{
+            updatedListener = (ItemUpdatedListener) context;
+        }
+        catch (ClassCastException e){
+            throw new ClassCastException(context.toString()+" must implement ItemUpdatedListener");
+        }
 
-    public Item(Crypto crypto_type, double price, Date last_synced, Currency currency){
         this.crypto_type = crypto_type;
         this.price = price;
-        this.last_synced = last_synced;
+        this.created = created;
+        this.updated = updated;
+        this.source_updated = source_updated;
         this.currency = currency;
+    }
+
+    public Item(Crypto crypto_type, double price, Currency currency){
+        this(null,crypto_type,
+                price,
+                new Date(),
+                new Date(),
+                new Date(),
+                currency);
 
 
     }
 
-    public Item(Crypto crypto_type, String currency_code) {
-        this(crypto_type,0,new Date(),Currency.getInstance(currency_code.toUpperCase()));
-    }
 
     public Item(Crypto crypto_type, double price, String currency_code) {
-        this(crypto_type,price,new Date(),Currency.getInstance(currency_code.toUpperCase()));
+        this(crypto_type,price,Currency.getInstance(currency_code.toUpperCase()));
+
+    }
+
+    public Item(Context context,Crypto crypto_type,double price,String currency_code){
+        this(context,
+                crypto_type,
+                price,
+                new Date(),new Date(),new Date(),Currency.getInstance(currency_code));
     }
 
     public Crypto getCrypto_type() {
@@ -52,16 +79,41 @@ public class Item implements Serializable{
     }
 
     public void setPrice(double price) {
+        double old_price = this.price;
         this.price = price;
+        updatedListener.onPriceChanged(old_price,price);
     }
 
-    public Date getLast_synced() {
-        return last_synced;
+    public Date getCreated() {
+        return created;
     }
 
-    public void setLast_synced(Date last_synced) {
-        this.last_synced = last_synced;
+    public void setCreated(Date created) {
+        Date old_date = this.created;
+        this.created = created;
+        updatedListener.onDateCreatedChanged(old_date,created);
     }
+
+    public Date getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(Date updated) {
+        Date old = this.updated;
+        this.updated = updated;
+        updatedListener.onDateUpdatedChanged(old,updated);
+    }
+
+    public Date getSource_updated() {
+        return source_updated;
+    }
+
+    public void setSource_updated(Date source_updated) {
+        Date old = this.source_updated;
+        this.source_updated = source_updated;
+        updatedListener.onSourceUpdatedChanged(old,source_updated);
+    }
+
 
     public Currency getCurrency() {
         return currency;
@@ -82,6 +134,8 @@ public class Item implements Serializable{
         }
         return null;
     }
+
+
 
 
 }
