@@ -256,7 +256,7 @@ public class ExchangeActivity extends AppCompatActivity implements ItemUpdatedLi
 
     @Override
     public void onPriceChanged(double old, double recent) {
-        price_text.setText(ResponseHelper.format(recent));
+        price_text.setText(String.format("%s %s",ResponseHelper.format(recent),item.getCurrency().getCurrencyCode()));
     }
 
     @Override

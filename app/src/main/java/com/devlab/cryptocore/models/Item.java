@@ -91,7 +91,10 @@ public class Item implements Serializable{
     public void setPrice(double price) {
         double old_price = this.price;
         this.price = price;
-        updatedListener.onPriceChanged(old_price,price);
+        if(updatedListener != null){
+            updatedListener.onPriceChanged(old_price,price);
+        }
+
     }
 
     public Date getCreated() {
@@ -101,7 +104,10 @@ public class Item implements Serializable{
     public void setCreated(Date created) {
         Date old_date = this.created;
         this.created = created;
-        updatedListener.onDateCreatedChanged(old_date,created);
+        if(created != null){
+            updatedListener.onDateCreatedChanged(old_date,created);
+        }
+
     }
 
     public Date getUpdated() {
@@ -111,7 +117,10 @@ public class Item implements Serializable{
     public void setUpdated(Date updated) {
         Date old = this.updated;
         this.updated = updated;
-        updatedListener.onDateUpdatedChanged(old,updated);
+        if(updated != null){
+            updatedListener.onDateUpdatedChanged(old,updated);
+        }
+
     }
 
     public Date getSource_updated() {
@@ -121,7 +130,10 @@ public class Item implements Serializable{
     public void setSource_updated(Date source_updated) {
         Date old = this.source_updated;
         this.source_updated = source_updated;
-        updatedListener.onSourceUpdatedChanged(old,source_updated);
+        if(source_updated != null){
+            updatedListener.onSourceUpdatedChanged(old,source_updated);
+        }
+
     }
 
 
