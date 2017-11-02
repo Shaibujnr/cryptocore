@@ -66,6 +66,16 @@ public class Item implements Serializable{
                 new Date(),new Date(),new Date(),Currency.getInstance(currency_code));
     }
 
+    public Item(Crypto crypto,double price,String currency_code,Date source_updated){
+        this(null,
+                crypto,
+                price,
+                new Date(),
+                new Date(),
+                source_updated,
+                Currency.getInstance(currency_code.toUpperCase()));
+    }
+
     public Crypto getCrypto_type() {
         return crypto_type;
     }

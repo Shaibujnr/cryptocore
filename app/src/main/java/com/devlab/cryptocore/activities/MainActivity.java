@@ -2,39 +2,30 @@ package com.devlab.cryptocore.activities;
 
 import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.*;
-import android.support.v7.widget.DividerItemDecoration;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.devlab.cryptocore.NetworkQueue;
-import com.devlab.cryptocore.PriceHelper;
+import com.devlab.cryptocore.ResponseHelper;
 import com.devlab.cryptocore.R;
 import com.devlab.cryptocore.adapters.ItemAdapter;
 import com.devlab.cryptocore.fragments.CardDialog;
-import com.devlab.cryptocore.interfaces.ItemUpdatedListener;
 import com.devlab.cryptocore.models.Crypto;
 import com.devlab.cryptocore.models.Item;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements CardDialog.CardDialogListener,ItemUpdatedListener{
+public class MainActivity extends AppCompatActivity implements CardDialog.CardDialogListener{
     ItemAdapter adapter;
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
@@ -50,8 +41,8 @@ public class MainActivity extends AppCompatActivity implements CardDialog.CardDi
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
         items = new ArrayList<Item>();
-        items.add(new Item(this,Crypto.BITCOIN,12345.4,"NGN"));
-        items.add(new Item(this,Crypto.ETHERIUM,4567.8,"USD"));
+        items.add(new Item(Crypto.BITCOIN,12345.4,"NGN"));
+        items.add(new Item(Crypto.ETHERIUM,4567.8,"USD"));
         recyclerView.setLayoutManager(layoutManager);
         adapter = new ItemAdapter(items);
         recyclerView.setAdapter(adapter);
@@ -95,8 +86,8 @@ public class MainActivity extends AppCompatActivity implements CardDialog.CardDi
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        PriceHelper priceHelper = new PriceHelper(response);
-                        double price = priceHelper.getPrice(code.toUpperCase());
+                        ResponseHelper responseHelper = new ResponseHelper(response);
+                        double price = responseHelper.getPrice(code.toUpperCase());
                         if(price == -1){
                             //Error Encountered
                             progressBar.setVisibility(View.GONE);
@@ -106,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements CardDialog.CardDi
                         }
                         else{
                             progressBar.setVisibility(View.GONE);
-                            items.add(0,new Item(MainActivity.this,crypto,price,code));
+                            items.add(0,new Item(null,crypto,price,code));
                             adapter.notifyDataSetChanged();
                             dialog.dismiss();
                         }
@@ -138,23 +129,5 @@ public class MainActivity extends AppCompatActivity implements CardDialog.CardDi
     }
 
 
-    @Override
-    public void onPriceChanged(double old, double recent) {
 
-    }
-
-    @Override
-    public void onDateCreatedChanged(Date old, Date recent) {
-
-    }
-
-    @Override
-    public void onDateUpdatedChanged(Date old, Date recent) {
-
-    }
-
-    @Override
-    public void onSourceUpdatedChanged(Date old, Date recent) {
-
-    }
 }

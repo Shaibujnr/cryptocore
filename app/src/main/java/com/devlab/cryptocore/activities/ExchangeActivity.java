@@ -18,7 +18,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.devlab.cryptocore.NetworkQueue;
-import com.devlab.cryptocore.PriceHelper;
+import com.devlab.cryptocore.ResponseHelper;
 import com.devlab.cryptocore.R;
 import com.devlab.cryptocore.interfaces.ItemUpdatedListener;
 import com.devlab.cryptocore.models.Crypto;
@@ -93,7 +93,7 @@ public class ExchangeActivity extends AppCompatActivity implements ItemUpdatedLi
         source_updated_year.setText(source_updated_format[2]);
         source_updated_time.setText(source_updated_format[3]);
         price_text.setText(String.format("%s %s",
-                PriceHelper.format(item.getPrice()),
+                ResponseHelper.format(item.getPrice()),
                 item.getCurrency().getCurrencyCode()));
         crypto_label.setText(item.getCrypto_type().toString());
         currency_label.setText(item.getCurrency().getCurrencyCode());
@@ -113,8 +113,8 @@ public class ExchangeActivity extends AppCompatActivity implements ItemUpdatedLi
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
-                                PriceHelper priceHelper = new PriceHelper(response);
-                                double price = priceHelper.getPrice(code.toUpperCase());
+                                ResponseHelper responseHelper = new ResponseHelper(response);
+                                double price = responseHelper.getPrice(code.toUpperCase());
                                 if(price == -1){
                                     //Error Encountered
                                     Toast.makeText(ExchangeActivity.this,
@@ -164,13 +164,19 @@ public class ExchangeActivity extends AppCompatActivity implements ItemUpdatedLi
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if(crypto_edit.isFocused() && charSequence.toString().length()>0){
-                    Log.e("Seq",charSequence.toString());
-                    String bigDecimal = new BigDecimal(charSequence.toString()).toPlainString();
-                    Log.e("Deci",bigDecimal);
-                    Double crypto_price = Double.parseDouble(bigDecimal);
-                    Log.e("Val",String.valueOf(crypto_price));
-                    Double base_result = crypto_price * item.getPrice();
-                    currency_edit.setText(String.valueOf(base_result));
+                    try {
+                        Log.e("Seq",charSequence.toString());
+                        String bigDecimal = new BigDecimal(charSequence.toString()).toPlainString();
+                        Log.e("Deci",bigDecimal);
+                        Double crypto_price = Double.parseDouble(bigDecimal);
+                        Log.e("Val",String.valueOf(crypto_price));
+                        Double base_result = crypto_price * item.getPrice();
+                        currency_edit.setText(String.valueOf(base_result));
+                    }
+                    catch(Exception e){
+                        currency_edit.setText("");
+                    }
+
                 }
                 else if(crypto_edit.isFocused() && charSequence.toString().length()<=0){
                     currency_edit.setText("");
@@ -193,13 +199,19 @@ public class ExchangeActivity extends AppCompatActivity implements ItemUpdatedLi
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if(currency_edit.isFocused() && charSequence.toString().length()>0){
-                    Log.e("Seq",charSequence.toString());
-                    String bigDecimal = new BigDecimal(charSequence.toString()).toPlainString();
-                    Log.e("Deci",bigDecimal);
-                    Double base_price = Double.parseDouble(bigDecimal);
-                    Log.e("Val",String.valueOf(base_price));
-                    Double crypto_result = base_price/item.getPrice();
-                    crypto_edit.setText(String.valueOf(crypto_result));
+                    try{
+                        Log.e("Seq",charSequence.toString());
+                        String bigDecimal = new BigDecimal(charSequence.toString()).toPlainString();
+                        Log.e("Deci",bigDecimal);
+                        Double base_price = Double.parseDouble(bigDecimal);
+                        Log.e("Val",String.valueOf(base_price));
+                        Double crypto_result = base_price/item.getPrice();
+                        crypto_edit.setText(String.valueOf(crypto_result));
+                    }
+                    catch (Exception e){
+                        crypto_edit.setText("");
+                    }
+
                 }
                 else if(currency_edit.isFocused() && charSequence.toString().length()<=0){
                     crypto_edit.setText("");
@@ -229,7 +241,7 @@ public class ExchangeActivity extends AppCompatActivity implements ItemUpdatedLi
     private String[] dmyt(Date date){
         String[] result = new String[4];
         String date_format = DateFormat.getDateTimeInstance(2,3).format(date);
-        Log.e("Lerror",date_format);
+        Log.e("Lerrors",date_format);
         String[] splitted = date_format.split(",");
         String year_time = splitted[1].substring(1);
         String[] ytp = year_time.split(" ");
@@ -237,14 +249,14 @@ public class ExchangeActivity extends AppCompatActivity implements ItemUpdatedLi
         result[0] = dm[1];
         result[1] = dm[0];
         result[2] = ytp[0];
-        result[3] = ytp[1]+" "+ytp[2];
+        result[3] = ytp[1];
         return result;
 
     }
 
     @Override
     public void onPriceChanged(double old, double recent) {
-        price_text.setText(PriceHelper.format(recent));
+        price_text.setText(ResponseHelper.format(recent));
     }
 
     @Override

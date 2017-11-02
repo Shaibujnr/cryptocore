@@ -12,9 +12,9 @@ import java.text.NumberFormat;
  * Created by shaibu on 10/26/17.
  */
 
-public class PriceHelper {
+public class ResponseHelper {
     JSONObject response;
-    public PriceHelper(JSONObject response){
+    public ResponseHelper(JSONObject response){
         this.response = response;
     }
 

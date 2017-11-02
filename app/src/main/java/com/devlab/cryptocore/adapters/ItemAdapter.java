@@ -11,12 +11,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +22,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.devlab.cryptocore.NetworkQueue;
-import com.devlab.cryptocore.PriceHelper;
+import com.devlab.cryptocore.ResponseHelper;
 import com.devlab.cryptocore.R;
 import com.devlab.cryptocore.activities.ExchangeActivity;
 import com.devlab.cryptocore.models.Crypto;
@@ -36,8 +33,6 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Currency;
-import java.util.HashMap;
 
 /**
  * Created by shaibu on 10/24/17.
@@ -71,7 +66,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         holder.timeStamp.setText(String.format("%s: %S","Updated",new SimpleDateFormat("dd/MM/yyyy hh:mm").
                         format(currentItem.getUpdated())));
         holder.priceText.setText(String.format("%s%s",currentItem.getCurrency().getSymbol(),
-                PriceHelper.format(currentItem.getPrice())));
+                ResponseHelper.format(currentItem.getPrice())));
         holder.crytoCode.setText(currentItem.getCrypto_type().toString());
         holder.spinner.setCompoundDrawablesWithIntrinsicBounds(Item.getDrawableFromCode(currentItem
         .getCurrency().getCurrencyCode().toUpperCase(),context),null,null,null);
@@ -89,8 +84,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
-                                PriceHelper priceHelper = new PriceHelper(response);
-                                double price = priceHelper.getPrice(currentItem.getCurrency().getCurrencyCode().toUpperCase());
+                                ResponseHelper responseHelper = new ResponseHelper(response);
+                                double price = responseHelper.getPrice(currentItem.getCurrency().getCurrencyCode().toUpperCase());
                                 if(price == -1){
                                     //Error Encountered
                                     Log.e("Fetching","Error here in Item adapter");
@@ -101,7 +96,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
                                 else{
                                     holder.progressBar.setVisibility(View.GONE);
                                     currentItem.setPrice(price);
-                                    String price_str = currentItem.getCurrency().getSymbol()+PriceHelper.format(currentItem.getPrice());
+                                    String price_str = currentItem.getCurrency().getSymbol()+ ResponseHelper.format(currentItem.getPrice());
                                     holder.priceText.setText(price_str);
                                 }
 
@@ -191,5 +186,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             spinnerItems.add(new SpinnerItem(spinner_choices[i],spinner_images.getResourceId(i,0)));
         }
     }
+
+
 
 }
