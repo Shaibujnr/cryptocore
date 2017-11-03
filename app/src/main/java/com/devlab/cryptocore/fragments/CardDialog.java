@@ -42,7 +42,6 @@ public class CardDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         initSpinner(getContext());
-        callingActivity = (MainActivity) getActivity();
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         setCancelable(false);
         LayoutInflater inflater = getActivity().getLayoutInflater();

@@ -25,6 +25,7 @@ import com.devlab.cryptocore.NetworkQueue;
 import com.devlab.cryptocore.ResponseHelper;
 import com.devlab.cryptocore.R;
 import com.devlab.cryptocore.activities.ExchangeActivity;
+import com.devlab.cryptocore.db.ItemDbHelper;
 import com.devlab.cryptocore.models.Crypto;
 import com.devlab.cryptocore.models.Item;
 import com.devlab.cryptocore.models.SpinnerItem;
@@ -33,6 +34,7 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by shaibu on 10/24/17.
@@ -43,6 +45,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     ArrayList<SpinnerItem> spinnerItems;
     Context context;
     NetworkQueue queue;
+    ItemDbHelper dbHelper;
 
 
     public ItemAdapter(ArrayList<Item> items){
@@ -53,6 +56,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card,parent,false);
         this.context = parent.getContext();
+        dbHelper = new ItemDbHelper(context);
         queue = NetworkQueue.getInstance(context);
         initSpinner(context);
         return new ViewHolder(v);
@@ -75,7 +79,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
                 holder.progressBar.setVisibility(View.VISIBLE);
-                Uri.Builder builder = Uri.parse(NetworkQueue.url_endpoint).buildUpon();
+                Uri.Builder builder = Uri.parse(NetworkQueue.price_url_endpoint).buildUpon();
                 builder.appendQueryParameter("fsym",currentItem.getCrypto_type().toString());
                 builder.appendQueryParameter("tsyms",currentItem.getCurrency().getCurrencyCode().toUpperCase());
                 String url = builder.build().toString();
@@ -89,15 +93,25 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
                                 if(price == -1){
                                     //Error Encountered
                                     Log.e("Fetching","Error here in Item adapter");
-                                    holder.progressBar.setVisibility(View.GONE);;
+                                    holder.progressBar.setVisibility(View.GONE);
                                     Toast.makeText(context,"Error Encountered",Toast.LENGTH_SHORT).show();
 
                                 }
                                 else{
                                     holder.progressBar.setVisibility(View.GONE);
-                                    currentItem.setPrice(price);
-                                    String price_str = currentItem.getCurrency().getSymbol()+ ResponseHelper.format(currentItem.getPrice());
-                                    holder.priceText.setText(price_str);
+                                    Date update_time = new Date();
+                                    int update_result =dbHelper.updatePrice(currentItem.get_id(),price,update_time);
+                                    Log.e("Updaten",String.format("%s:%s","update_price",String.valueOf(price)));
+                                    Log.e("Updaten",String.format("%s:%s","update_result",String.valueOf(update_result)));
+                                    if(update_result > 0){
+                                        //update was successful
+                                        String price_str = currentItem.getCurrency().getSymbol()+ ResponseHelper.format(price);
+                                        String updated_txt = String.format("%s: %S","Updated",
+                                                new SimpleDateFormat("dd/MM/yyyy hh:mm").format(update_time));
+                                        holder.priceText.setText(price_str);
+                                        holder.timeStamp.setText(updated_txt);
+                                    }
+
                                 }
 
                             }
@@ -117,8 +131,13 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
                 final AlertDialog dialog = new AlertDialog.Builder(context).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        items.remove(currentItem);
-                        notifyDataSetChanged();
+                        int delete_result = dbHelper.deleteItem(currentItem.get_id());
+                        Log.e("Deleten",String.valueOf(delete_result));
+                        if(delete_result > 0){
+                            items.remove(currentItem);
+                            notifyDataSetChanged();
+                        }
+
 
                     }
                 }).setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -142,7 +161,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
                 intent.putExtra("card_price",currentItem.getPrice());
                 intent.putExtra("card_created",currentItem.getCreated());
                 intent.putExtra("card_updated",currentItem.getUpdated());
-                intent.putExtra("card_source_updated",currentItem.getSource_updated());
                 context.startActivity(intent);
             }
         });

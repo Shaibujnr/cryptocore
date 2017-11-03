@@ -79,7 +79,7 @@ public class ExchangeActivity extends AppCompatActivity implements ItemUpdatedLi
         item = getItemFromIntent();
         String[] card_created_format = dmyt(item.getCreated());
         String[] card_updated_format = dmyt(item.getUpdated());
-        String[] source_updated_format = dmyt(item.getSource_updated());
+//        String[] source_updated_format = dmyt(item.getSource_updated());
         card_created_day.setText(card_created_format[0]);
         card_created_month.setText(card_created_format[1]);
         card_created_year.setText(card_created_format[2]);
@@ -88,10 +88,10 @@ public class ExchangeActivity extends AppCompatActivity implements ItemUpdatedLi
         card_updated_month.setText(card_updated_format[1]);
         card_updated_year.setText(card_updated_format[2]);
         card_updated_time.setText(card_updated_format[3]);
-        source_updated_day.setText(source_updated_format[0]);
-        source_updated_month.setText(source_updated_format[1]);
-        source_updated_year.setText(source_updated_format[2]);
-        source_updated_time.setText(source_updated_format[3]);
+//        source_updated_day.setText(source_updated_format[0]);
+//        source_updated_month.setText(source_updated_format[1]);
+//        source_updated_year.setText(source_updated_format[2]);
+//        source_updated_time.setText(source_updated_format[3]);
         price_text.setText(String.format("%s %s",
                 ResponseHelper.format(item.getPrice()),
                 item.getCurrency().getCurrencyCode()));
@@ -104,7 +104,7 @@ public class ExchangeActivity extends AppCompatActivity implements ItemUpdatedLi
             public void onClick(View view) {
                 final Crypto crypto = item.getCrypto_type();
                 final String code = item.getCurrency().getCurrencyCode();
-                Uri.Builder builder = Uri.parse(NetworkQueue.url_endpoint).buildUpon();
+                Uri.Builder builder = Uri.parse(NetworkQueue.price_url_endpoint).buildUpon();
                 builder.appendQueryParameter("fsym",crypto.toString());
                 builder.appendQueryParameter("tsyms",code);
                 String url = builder.build().toString();
@@ -149,7 +149,7 @@ public class ExchangeActivity extends AppCompatActivity implements ItemUpdatedLi
         Date created = (Date) intent.getSerializableExtra("card_created");
         Date updated = (Date) intent.getSerializableExtra("card_updated");
         Date source_updated = (Date) intent.getSerializableExtra("card_source_updated");
-        return new Item(this,crypto,price,created,updated,source_updated, Currency.getInstance(code));
+        return new Item(crypto,price,Currency.getInstance(code.toUpperCase()));
     }
 
     private void initExchange(){

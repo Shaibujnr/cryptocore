@@ -17,6 +17,7 @@ import com.devlab.cryptocore.NetworkQueue;
 import com.devlab.cryptocore.ResponseHelper;
 import com.devlab.cryptocore.R;
 import com.devlab.cryptocore.adapters.ItemAdapter;
+import com.devlab.cryptocore.db.ItemDbHelper;
 import com.devlab.cryptocore.fragments.CardDialog;
 import com.devlab.cryptocore.models.Crypto;
 import com.devlab.cryptocore.models.Item;
@@ -24,6 +25,7 @@ import com.devlab.cryptocore.models.Item;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Currency;
 
 public class MainActivity extends AppCompatActivity implements CardDialog.CardDialogListener{
     ItemAdapter adapter;
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements CardDialog.CardDi
     ArrayList<Item> items;
     FloatingActionButton floatingActionButton;
     RecyclerView.SmoothScroller smoothScroller;
+    ItemDbHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +43,8 @@ public class MainActivity extends AppCompatActivity implements CardDialog.CardDi
         layoutManager = new LinearLayoutManager(this);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
-        items = new ArrayList<Item>();
-        items.add(new Item(Crypto.BITCOIN,12345.4,"NGN"));
-        items.add(new Item(Crypto.ETHERIUM,4567.8,"USD"));
+        dbHelper = new ItemDbHelper(this);
+        items = dbHelper.fetchItems();
         recyclerView.setLayoutManager(layoutManager);
         adapter = new ItemAdapter(items);
         recyclerView.setAdapter(adapter);
@@ -63,7 +65,8 @@ public class MainActivity extends AppCompatActivity implements CardDialog.CardDi
 
 
     @Override
-    public void createCard(final CardDialog dialog, final ProgressBar progressBar, final Crypto crypto, final String code) {
+    public void createCard(final CardDialog dialog, final ProgressBar progressBar, final Crypto crypto,
+                           final String code) {
         for(int i=0;i<items.size();i++){
             Item item = items.get(i);
             if(item.getCurrency().getCurrencyCode().equals(code) &&
@@ -77,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements CardDialog.CardDi
             }
         }
         progressBar.setVisibility(View.VISIBLE);
-        Uri.Builder builder = Uri.parse(NetworkQueue.url_endpoint).buildUpon();
+        Uri.Builder builder = Uri.parse(NetworkQueue.price_url_endpoint).buildUpon();
         builder.appendQueryParameter("fsym",crypto.toString());
         builder.appendQueryParameter("tsyms",code);
         String url = builder.build().toString();
@@ -97,8 +100,18 @@ public class MainActivity extends AppCompatActivity implements CardDialog.CardDi
                         }
                         else{
                             progressBar.setVisibility(View.GONE);
-                            items.add(0,new Item(null,crypto,price,code));
-                            adapter.notifyDataSetChanged();
+                            Item new_item = new Item(crypto,price, Currency.getInstance(code));
+                            long inserted_id = dbHelper.insertItem(new_item);
+                            if(inserted_id > 0){
+                                //item successfully added into database
+                                //now update ui
+                                new_item.set_id(inserted_id);
+                                items.add(0,new_item);
+                                adapter.notifyDataSetChanged();
+                            }
+                            else{
+                                displayMessage("Unable to create item");
+                            }
                             dialog.dismiss();
                         }
 
