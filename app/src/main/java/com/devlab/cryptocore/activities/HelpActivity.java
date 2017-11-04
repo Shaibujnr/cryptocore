@@ -41,10 +41,16 @@ public class HelpActivity extends AppCompatActivity {
         progressText = (TextView) findViewById(R.id.help_progress_text);
         dbHelper = new ItemDbHelper(this);
         Intent intent = getIntent();
-        boolean sync = intent.getBooleanExtra("sync",false);
+        final boolean sync = intent.getBooleanExtra("sync",false);
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(sync){
+                    SharedPreferences sp = getSharedPreferences(getString(R.string.sp_name),MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putBoolean("new",false);
+                    editor.apply();
+                }
                 Intent intent1 = new Intent(HelpActivity.this,MainActivity.class);
                 intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -86,10 +92,7 @@ public class HelpActivity extends AppCompatActivity {
                                 }
 
                             }
-                            SharedPreferences sp = getSharedPreferences(getString(R.string.sp_name),MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sp.edit();
-                            editor.putBoolean("new",false);
-                            editor.apply();
+
 
 
                         }

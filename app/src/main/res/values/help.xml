@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="help_add_card">
+        Click on the plus icon to create a conversion card
+    </string>
+
+    <string name="help_card_update_label">
+        The card update label displays the last time the conversion price was updated
+    </string>
+
+    <string name="help_card_delete_button">
+        Click on the delete button of a card to delete that conversion card
+    </string>
+
+    <string name="help_card_sync_button">
+        The sync button fetches the current conversion price between the cryptocurrency and the
+        base currency
+    </string>
+
+    <string name="help_conversion_symbol">
+        It shows the short code for the cryptocurrency, the currency code for the base currency
+        and also a flag to identify the country that uses that base currency. Like in the image above
+        it displays BTC(Bitcoin) and NGN(Nigerian Naira) with the Nigerian Flag
+    </string>
+
+    <string name="help_conversion_price">
+        This displays the price of the cryptocurrency in base currency. Like in the image above, it
+        shows that 1 bitcoin costs 2,601,653,72 Nigerian Naira
+    </string>
+
+    <string name="help_start_conversion">
+        To start conversion click on the conversion card. This would be anywhere else besides the
+        buttons
+    </string>
+
+    <string name="help_card_created">
+        The card created view box displays the date and time in which the conversion card was created
+    </string>
+
+    <string name="help_card_updated_details">
+        This box displays exactly the same date as that in the previous screen. Only this time
+        it shows it in a more human friendly form
+    </string>
+
+    <string name="help_convert">
+        the convert card displays the price of one crypto currency in the corresponding base
+        currency and it has two input fields(one for the cryptocurrency value and the other for
+        the base currency value). The conversion is done in both directions and results are obtained
+        on the go i.e as values change in the field
+    </string>
+
+    <string name="help_synchronise">
+        Performs the same function as the sync button on the conversion card
+    </string>
+
+    <string name="help_crypto_icon">
+        An icon that represents the cryptocurrency
+    </string>
+</resources>
