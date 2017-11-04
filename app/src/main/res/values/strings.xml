@@ -46,7 +46,9 @@
         <item>@drawable/crc</item>
         <item>@drawable/cup</item>
     </array>
-    
+
+    <string name="sp_name">sp</string>
+
     <string name="card_transition_string">Card Transition</string>
     <string name="crypto_label_transition_string">Crypto Label Transition</string>
     <string name="currency_code_transition_string">Currency Code Transition</string>

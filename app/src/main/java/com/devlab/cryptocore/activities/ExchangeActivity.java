@@ -59,7 +59,7 @@ public class ExchangeActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exchange);
         dbHelper = new ItemDbHelper(this);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         refresh = (ImageButton) findViewById(R.id.exchange_refresh);
         progressBar = (ProgressBar) findViewById(R.id.exchange_progress);
         crypto_edit = (EditText) findViewById(R.id.exchange_card_crypt_edit);

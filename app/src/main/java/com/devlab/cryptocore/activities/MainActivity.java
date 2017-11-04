@@ -1,5 +1,7 @@
 package com.devlab.cryptocore.activities;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements CardDialog.CardDi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        checkFirstLaunch();
         layoutManager = new LinearLayoutManager(this);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
@@ -61,6 +64,17 @@ public class MainActivity extends AppCompatActivity implements CardDialog.CardDi
                 return LinearSmoothScroller.SNAP_TO_START;
             }
         };
+    }
+
+    private void checkFirstLaunch() {
+        SharedPreferences sp = getSharedPreferences(getString(R.string.sp_name),MODE_PRIVATE);
+        Boolean firstLaunch = sp.getBoolean("new",true);
+        if(firstLaunch){
+            //app is launched for the first time
+            Intent intent = new Intent(this,HelpActivity.class);
+            intent.putExtra("sync",true);
+            startActivity(intent);
+        }
     }
 
 
