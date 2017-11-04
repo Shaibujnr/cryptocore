@@ -113,7 +113,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
                                         String updated_txt = String.format("%s: %S","Updated",
                                                 new SimpleDateFormat("dd/MM/yyyy hh:mm").format(update_time));
                                         holder.priceText.setText(price_str);
+                                        currentItem.setPrice(price);
                                         holder.timeStamp.setText(updated_txt);
+                                        currentItem.setUpdated(update_time);
                                     }
 
                                 }
@@ -158,7 +160,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         holder.self.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context,"Card Clicked",Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(context, ExchangeActivity.class);
                 intent.putExtra("card_id",currentItem.get_id());
 
@@ -171,13 +172,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
                     Pair<View,String> cct = Pair.create((View)holder.spinner,currency_code_transition);
                     String price_transition = context.getString(R.string.price_transition_string);
                     Pair<View,String> pt = Pair.create((View)holder.priceText,price_transition);
-                    String updated_transition = context.getString(R.string.updated_transition_string);
-                    Pair<View,String> ut = Pair.create((View)holder.timeStamp,updated_transition);
                     String refresh_transition = context.getString(R.string.refresh_transition_string);
                     Pair<View,String> rt = Pair.create((View)holder.refresh,refresh_transition);
                     ActivityOptionsCompat options =
-                            ActivityOptionsCompat.makeSceneTransitionAnimation((MainActivity)context
-                                    ,clt,cct,pt,ut,rt);
+                            ActivityOptionsCompat.makeSceneTransitionAnimation((MainActivity)context,
+                                    ct,clt,cct,pt,rt);
                     context.startActivity(intent,options.toBundle());
                 }
                 else{

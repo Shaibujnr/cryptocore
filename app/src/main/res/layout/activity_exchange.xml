@@ -117,6 +117,13 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="Created"
+                    android:textSize="18sp"
+                    android:textColor="#fff"
+                    android:textAlignment="center"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:id="@+id/exchange_card_created_month"
                     android:text="May"
                     android:textSize="20sp"
@@ -146,14 +153,6 @@
                     android:textColor="#fff"
                     android:id="@+id/exchange_card_created_time"
                     android:textAlignment="center"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Card Created"
-                    android:textSize="18sp"
-                    android:textColor="#fff"
-                    android:textAlignment="center"/>
             </LinearLayout>
         </android.support.v7.widget.CardView>
         <android.support.v7.widget.CardView
@@ -171,6 +170,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Updated"
+                    android:textSize="18sp"
+                    android:textColor="#fff"
+                    android:textAlignment="center"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -201,13 +207,6 @@
                     android:text="03:40"
                     android:textSize="20sp"
                     android:id="@+id/exchange_card_updated_time"
-                    android:textColor="#fff"
-                    android:textAlignment="center"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Card Updated"
-                    android:textSize="18sp"
                     android:textColor="#fff"
                     android:textAlignment="center"/>
             </LinearLayout>

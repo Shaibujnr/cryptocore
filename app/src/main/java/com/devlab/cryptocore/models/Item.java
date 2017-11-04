@@ -98,7 +98,6 @@ public class Item implements Serializable{
         TypedArray imgs = context.getResources().obtainTypedArray(R.array.spinner_images);
         for(int i=0;i<choices.length;i++){
             if(choices[i].equals(code)){
-                Toast.makeText(context,"found it",Toast.LENGTH_SHORT).show();
                 return imgs.getDrawable(i);
             }
         }

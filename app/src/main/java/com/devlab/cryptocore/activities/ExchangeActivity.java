@@ -125,11 +125,15 @@ public class ExchangeActivity extends AppCompatActivity{
                                         price_text.setText(String.format("%s %s",
                                                 ResponseHelper.format(price),
                                                 item.getCurrency().getCurrencyCode()));
+                                        item.setPrice(price);
                                         String[] cuf = dmyt(update_time);
                                         card_updated_day.setText(cuf[0]);
                                         card_updated_month.setText(cuf[1]);
                                         card_updated_year.setText(cuf[2]);
                                         card_updated_time.setText(cuf[3]);
+                                        item.setUpdated(update_time);
+                                        crypto_edit.setText("");
+                                        currency_edit.setText("");
 
                                     }
 
