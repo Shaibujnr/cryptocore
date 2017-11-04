@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements CardDialog.CardDi
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     ArrayList<Item> items;
-    FloatingActionButton floatingActionButton;
+    FloatingActionButton floatingActionButton,help;
     RecyclerView.SmoothScroller smoothScroller;
     ItemDbHelper dbHelper;
 
@@ -46,12 +46,20 @@ public class MainActivity extends AppCompatActivity implements CardDialog.CardDi
         layoutManager = new LinearLayoutManager(this);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
+        help = (FloatingActionButton) findViewById(R.id.help);
         dbHelper = new ItemDbHelper(this);
         items = dbHelper.fetchItems();
         recyclerView.setLayoutManager(layoutManager);
         adapter = new ItemAdapter(items);
         recyclerView.setAdapter(adapter);
 
+        help.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,HelpActivity.class);
+                startActivity(intent);
+            }
+        });
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

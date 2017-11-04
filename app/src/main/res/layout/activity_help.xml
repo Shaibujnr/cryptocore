@@ -13,6 +13,222 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add Card"
+                android:textStyle="bold"
+                android:typeface="monospace"
+                android:textSize="20sp"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/card_create"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Click on the plus button to create a convesion card"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add Card"
+                android:textStyle="bold"
+                android:typeface="monospace"
+                android:textSize="20sp"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/card_create"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Click on the plus button to create a convesion card"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add Card"
+                android:textStyle="bold"
+                android:typeface="monospace"
+                android:textSize="20sp"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/card_create"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Click on the plus button to create a convesion card"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add Card"
+                android:textStyle="bold"
+                android:typeface="monospace"
+                android:textSize="20sp"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/card_create"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Click on the plus button to create a convesion card"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add Card"
+                android:textStyle="bold"
+                android:typeface="monospace"
+                android:textSize="20sp"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/card_create"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Click on the plus button to create a convesion card"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add Card"
+                android:textStyle="bold"
+                android:typeface="monospace"
+                android:textSize="20sp"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/card_create"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Click on the plus button to create a convesion card"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add Card"
+                android:textStyle="bold"
+                android:typeface="monospace"
+                android:textSize="20sp"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/card_create"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Click on the plus button to create a convesion card"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add Card"
+                android:textStyle="bold"
+                android:typeface="monospace"
+                android:textSize="20sp"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/card_create"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Click on the plus button to create a convesion card"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add Card"
+                android:textStyle="bold"
+                android:typeface="monospace"
+                android:textSize="20sp"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/card_create"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Click on the plus button to create a convesion card"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add Card"
+                android:textStyle="bold"
+                android:typeface="monospace"
+                android:textSize="20sp"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/card_create"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Click on the plus button to create a convesion card"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add Card"
+                android:textStyle="bold"
+                android:typeface="monospace"
+                android:textSize="20sp"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/card_create"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Click on the plus button to create a convesion card"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add Card"
+                android:textStyle="bold"
+                android:typeface="monospace"
+                android:textSize="20sp"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/card_create"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Click on the plus button to create a convesion card"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
 
         </LinearLayout>
 
