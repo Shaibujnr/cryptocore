@@ -16,7 +16,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.devlab.cryptocore.NetworkQueue;
 import com.devlab.cryptocore.ResponseHelper;
 import com.devlab.cryptocore.R;
-import com.devlab.cryptocore.adapters.HitemAdapter;
 import com.devlab.cryptocore.adapters.ItemAdapter;
 import com.devlab.cryptocore.db.ItemDbHelper;
 import com.devlab.cryptocore.fragments.CardDialog;
@@ -29,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Currency;
 
 public class MainActivity extends AppCompatActivity implements CardDialog.CardDialogListener{
-    HitemAdapter adapter;
+    ItemAdapter adapter;
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     ArrayList<Item> items;
@@ -47,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements CardDialog.CardDi
         dbHelper = new ItemDbHelper(this);
         items = dbHelper.fetchItems();
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new HitemAdapter(items);
+        adapter = new ItemAdapter(items);
         recyclerView.setAdapter(adapter);
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {

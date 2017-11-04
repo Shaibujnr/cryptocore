@@ -252,16 +252,14 @@ public class ExchangeActivity extends AppCompatActivity{
 
     private String[] dmyt(Date date){
         String[] result = new String[4];
-        String date_format = DateFormat.getDateTimeInstance(2,3).format(date);
-        Log.e("Lerrors",date_format);
-        String[] splitted = date_format.split(",");
+        String df = new SimpleDateFormat("dd MMM yyy h:mm a").format(date);
+        Log.e("Lerrors",df);
+        String[] splitted = df.split(" ");
         String year_time = splitted[1].substring(1);
-        String[] ytp = year_time.split(" ");
-        String[] dm = splitted[0].split(" ");
-        result[0] = dm[1];
-        result[1] = dm[0];
-        result[2] = ytp[0];
-        result[3] = ytp[1];
+        result[0] = splitted[0];
+        result[1] = splitted[1];
+        result[2] = splitted[2];
+        result[3] = splitted[3]+splitted[4];
         return result;
 
     }
