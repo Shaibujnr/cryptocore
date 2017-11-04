@@ -12,8 +12,10 @@
         app:cardElevation="5dp"
         app:cardCornerRadius="3dp"
         android:layout_margin="6dp"
+        android:transitionName="@string/card_transition_string"
         android:id="@+id/exchange_card"
-        app:contentPadding="5dp">
+        app:contentPadding="5dp"
+        tools:targetApi="lollipop">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -23,7 +25,6 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:text="1 Bitcoin Equals"
                 android:textColor="@android:color/darker_gray"
                 android:id="@+id/exchange_card_crypt_text"/>
             <TextView
@@ -35,8 +36,8 @@
                 android:layout_below="@id/exchange_card_crypt_text"
                 android:layout_alignLeft="@id/exchange_card_crypt_text"
                 android:layout_alignStart="@id/exchange_card_crypt_text"
-                android:id="@+id/exchange_card_price_text"
-                android:text="1,234,567 NGN"/>
+                android:transitionName="@string/price_transition_string"
+                android:id="@+id/exchange_card_price_text" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -59,7 +60,7 @@
                     android:layout_marginLeft="3dp"
                     android:layout_marginStart="3dp"
                     android:id="@+id/exchange_card_crypt_label"
-                    android:text="BTC"
+                    android:transitionName="@string/crypto_label_transition_string"
                     android:background="@android:color/darker_gray"
                     android:textSize="15sp"/>
             </LinearLayout>
@@ -84,7 +85,7 @@
                     android:layout_marginLeft="3dp"
                     android:layout_marginStart="3dp"
                     android:id="@+id/exchange_card_price_label"
-                    android:text="NGN"
+                    android:transitionName="@string/currency_code_transition_string"
                     android:background="@android:color/darker_gray"
                     android:textSize="15sp"/>
             </LinearLayout>
@@ -162,8 +163,10 @@
             android:layout_margin="2dp"
             app:cardElevation="5dp"
             app:contentPadding="5dp"
+            android:transitionName="@string/updated_transition_string"
             app:cardBackgroundColor="#5588ff"
-            app:cardCornerRadius="5dp">
+            app:cardCornerRadius="5dp"
+            tools:targetApi="lollipop">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -220,7 +223,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:id="@+id/exchange_refresh"
-        android:src="@drawable/update"/>
+        android:transitionName="@string/refresh_transition_string"
+        android:src="@drawable/update"
+        tools:targetApi="lollipop" />
 
 
 

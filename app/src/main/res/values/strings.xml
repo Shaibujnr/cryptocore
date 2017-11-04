@@ -46,4 +46,11 @@
         <item>@drawable/crc</item>
         <item>@drawable/cup</item>
     </array>
+    
+    <string name="card_transition_string">Card Transition</string>
+    <string name="crypto_label_transition_string">Crypto Label Transition</string>
+    <string name="currency_code_transition_string">Currency Code Transition</string>
+    <string name="price_transition_string">PriceTransition</string>
+    <string name="updated_transition_string">UpdatedTransition</string>
+    <string name="refresh_transition_string">Refresh Transition</string>
 </resources>

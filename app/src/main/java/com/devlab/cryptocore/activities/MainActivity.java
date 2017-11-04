@@ -122,7 +122,6 @@ public class MainActivity extends AppCompatActivity implements CardDialog.CardDi
             public void onErrorResponse(VolleyError error) {
                 progressBar.setVisibility(View.GONE);
                 displayMessage("Error Encountered try again");
-                displayMessage(error.toString());
                 dialog.dismiss();
 
             }

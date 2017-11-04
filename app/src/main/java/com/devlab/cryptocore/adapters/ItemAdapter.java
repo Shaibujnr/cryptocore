@@ -6,6 +6,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.net.Uri;
+import android.os.Build;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +28,7 @@ import com.devlab.cryptocore.NetworkQueue;
 import com.devlab.cryptocore.ResponseHelper;
 import com.devlab.cryptocore.R;
 import com.devlab.cryptocore.activities.ExchangeActivity;
+import com.devlab.cryptocore.activities.MainActivity;
 import com.devlab.cryptocore.db.ItemDbHelper;
 import com.devlab.cryptocore.models.Crypto;
 import com.devlab.cryptocore.models.Item;
@@ -157,7 +161,28 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
                 Toast.makeText(context,"Card Clicked",Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(context, ExchangeActivity.class);
                 intent.putExtra("card_id",currentItem.get_id());
-                context.startActivity(intent);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    String card_transition = context.getString(R.string.card_transition_string);
+                    Pair<View,String> ct = Pair.create(holder.self,card_transition);
+                    String crypto_label_transition = context.getString(R.string.crypto_label_transition_string);
+                    Pair<View,String> clt = Pair.create((View)holder.crytoCode,crypto_label_transition);
+                    String currency_code_transition = context.getString(R.string.currency_code_transition_string);
+                    Pair<View,String> cct = Pair.create((View)holder.spinner,currency_code_transition);
+                    String price_transition = context.getString(R.string.price_transition_string);
+                    Pair<View,String> pt = Pair.create((View)holder.priceText,price_transition);
+                    String updated_transition = context.getString(R.string.updated_transition_string);
+                    Pair<View,String> ut = Pair.create((View)holder.timeStamp,updated_transition);
+                    String refresh_transition = context.getString(R.string.refresh_transition_string);
+                    Pair<View,String> rt = Pair.create((View)holder.refresh,refresh_transition);
+                    ActivityOptionsCompat options =
+                            ActivityOptionsCompat.makeSceneTransitionAnimation((MainActivity)context
+                                    ,clt,cct,pt,ut,rt);
+                    context.startActivity(intent,options.toBundle());
+                }
+                else{
+                    context.startActivity(intent);
+                }
             }
         });
     }
@@ -200,6 +225,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             spinnerItems.add(new SpinnerItem(spinner_choices[i],spinner_images.getResourceId(i,0)));
         }
     }
+
+
 
 
 
