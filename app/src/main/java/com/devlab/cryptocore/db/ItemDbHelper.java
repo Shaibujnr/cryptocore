@@ -99,4 +99,28 @@ public class ItemDbHelper extends SQLiteOpenHelper {
                 String.format("%s=%s", ItemContract.ItemEntry._ID,String.valueOf(itemId)),null);
     }
 
+    public Item getItemById(long itemId){
+        db = getReadableDatabase();
+        String query = String.format("SELECT * FROM %s WHERE %s=%s",
+                ItemContract.ItemEntry.TABLE_NAME,
+                ItemContract.ItemEntry._ID,
+                String.valueOf(itemId));
+        Cursor cursor = db.rawQuery(query,null);
+        while (cursor.moveToNext()){
+            long id = cursor.getLong(cursor.getColumnIndex(ItemContract.ItemEntry._ID));
+            Crypto crypto = Crypto.fromSym(cursor.getString(cursor.getColumnIndex(
+                    ItemContract.ItemEntry.COLUMN_NAME_CRYPTO)));
+            double price = Double.parseDouble(cursor.getString(cursor.getColumnIndex(
+                    ItemContract.ItemEntry.COLUMN_NAME_PRICE)));
+            Currency currency = Currency.getInstance(cursor.getString(cursor.getColumnIndex(
+                    ItemContract.ItemEntry.COLUMN_NAME_CURRENCY)));
+            Date created = new Date(Long.parseLong(cursor.getString(cursor.getColumnIndex(
+                    ItemContract.ItemEntry.COLUMN_NAME_CREATED))));
+            Date updated = new Date(Long.parseLong(cursor.getString(cursor.getColumnIndex(
+                    ItemContract.ItemEntry.COLUMN_NAME_UPDATED))));
+            return new Item(id,crypto,price,currency,created,updated);
+        }
+        return null;
+    }
+
 }

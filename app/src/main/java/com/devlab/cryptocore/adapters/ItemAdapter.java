@@ -156,11 +156,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             public void onClick(View view) {
                 Toast.makeText(context,"Card Clicked",Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(context, ExchangeActivity.class);
-                intent.putExtra("card_crypto_type",currentItem.getCrypto_type());
-                intent.putExtra("card_currency_code",currentItem.getCurrency().getCurrencyCode());
-                intent.putExtra("card_price",currentItem.getPrice());
-                intent.putExtra("card_created",currentItem.getCreated());
-                intent.putExtra("card_updated",currentItem.getUpdated());
+                intent.putExtra("card_id",currentItem.get_id());
                 context.startActivity(intent);
             }
         });

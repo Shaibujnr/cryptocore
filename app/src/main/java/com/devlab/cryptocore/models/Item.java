@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable;
 import android.widget.Toast;
 
 import com.devlab.cryptocore.R;
-import com.devlab.cryptocore.interfaces.ItemUpdatedListener;
 
 import java.io.Serializable;
 import java.util.Currency;
