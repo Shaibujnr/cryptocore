@@ -215,8 +215,14 @@
     </LinearLayout>
 
 
-    
 
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone"
+        android:layout_above="@+id/exchange_refresh"
+        android:id="@+id/exchange_progress"/>
     <ImageButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

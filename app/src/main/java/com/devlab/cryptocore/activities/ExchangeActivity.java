@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +39,7 @@ public class ExchangeActivity extends AppCompatActivity{
     Item item;
     ImageButton refresh;
     EditText crypto_edit,currency_edit;
+    ProgressBar progressBar;
     TextView crypto_title,
             price_text,
             crypto_label,
@@ -59,6 +61,7 @@ public class ExchangeActivity extends AppCompatActivity{
         dbHelper = new ItemDbHelper(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         refresh = (ImageButton) findViewById(R.id.exchange_refresh);
+        progressBar = (ProgressBar) findViewById(R.id.exchange_progress);
         crypto_edit = (EditText) findViewById(R.id.exchange_card_crypt_edit);
         currency_edit = (EditText) findViewById(R.id.exchange_card_price_edit);
         crypto_title = (TextView) findViewById(R.id.exchange_card_crypt_text);
@@ -96,6 +99,7 @@ public class ExchangeActivity extends AppCompatActivity{
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressBar.setVisibility(View.VISIBLE);
                 final Crypto crypto = item.getCrypto_type();
                 final String code = item.getCurrency().getCurrencyCode();
                 Uri.Builder builder = Uri.parse(NetworkQueue.price_url_endpoint).buildUpon();
@@ -111,6 +115,7 @@ public class ExchangeActivity extends AppCompatActivity{
                                 double price = responseHelper.getPrice(code.toUpperCase());
                                 if(price == -1){
                                     //Error Encountered
+                                    progressBar.setVisibility(View.GONE);
                                     Toast.makeText(ExchangeActivity.this,
                                             "Error Encountered try again",Toast.LENGTH_SHORT).show();
 
@@ -134,6 +139,9 @@ public class ExchangeActivity extends AppCompatActivity{
                                         item.setUpdated(update_time);
                                         crypto_edit.setText("");
                                         currency_edit.setText("");
+                                        progressBar.setVisibility(View.GONE);
+                                        Toast.makeText(ExchangeActivity.this,
+                                                "Update Success",Toast.LENGTH_SHORT).show();
 
                                     }
 
@@ -144,6 +152,7 @@ public class ExchangeActivity extends AppCompatActivity{
                         }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        progressBar.setVisibility(View.GONE);
                         Toast.makeText(ExchangeActivity.this,
                                 "Error Encountered try again",Toast.LENGTH_SHORT).show();
 
@@ -255,7 +264,6 @@ public class ExchangeActivity extends AppCompatActivity{
         String df = new SimpleDateFormat("dd MMM yyy h:mm a").format(date);
         Log.e("Lerrors",df);
         String[] splitted = df.split(" ");
-        String year_time = splitted[1].substring(1);
         result[0] = splitted[0];
         result[1] = splitted[1];
         result[2] = splitted[2];
